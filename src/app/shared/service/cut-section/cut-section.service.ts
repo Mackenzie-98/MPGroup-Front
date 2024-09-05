@@ -8,7 +8,7 @@ import { environment } from '../../../../../enviroment.prod';
     providedIn: 'root'
 })
 export class CutSectionService {
-    private baseUrl: string = environment.apiUrl;
+    private baseUrl: string = `${environment.apiUrl}/cut-section`;
 
     constructor(private http: HttpClient) { }
 

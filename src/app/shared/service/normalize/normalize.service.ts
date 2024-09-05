@@ -7,7 +7,7 @@ import { environment } from '../../../../../enviroment.prod';
     providedIn: 'root'
 })
 export class NormalizationService {
-    private baseUrl: string = environment.apiUrl;
+    private baseUrl: string = `${environment.apiUrl}/normalization`;
 
     constructor(private http: HttpClient) { }
 
