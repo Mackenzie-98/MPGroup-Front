@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, HostListener, Input } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, HostListener, Input } from '@angular/core';
 import { navbarData } from './nav-data';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 
@@ -62,7 +62,3 @@ export class SidebarComponent implements OnInit {
     this.onToggleSideNav.emit({ collapsed: this.isSidebarCollapsed, screenWidth: this.screenWidth });
   }
 }
-function Output(): (target: SidebarComponent, propertyKey: "onToggleSideNav") => void {
-  throw new Error('Function not implemented.');
-}
-
