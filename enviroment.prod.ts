@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://main.d304ieyk7f96yf.amplifyapp.com', // URL del backend en Amplify
+    apiUrl: 'https://main.d1u42psa35zu65.amplifyapp.com', // URL del backend en Amplify
 };
