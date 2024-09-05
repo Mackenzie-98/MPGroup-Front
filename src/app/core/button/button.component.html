@@ -1,0 +1,6 @@
+<button [ngClass]="{
+    'btn-primary': type === 'primary',
+    'btn-secondary': type === 'secondary'
+  }" [disabled]="disabled" class="w-full md:w-auto">
+    <ng-content></ng-content>
+</button>

@@ -1,0 +1,61 @@
+.consultar-info-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'ITCAvantGardeStd-Bk', sans-serif;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    overflow: hidden;
+    /* Establece una altura mínima para todas las tarjetas */
+    max-width: 230px;
+    /* Asegura que todas las tarjetas tengan el mismo ancho */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    flex-shrink: 0;
+    /* Evita que la imagen se encoja */
+}
+
+.card-text {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    /* Permite que el texto crezca para ocupar espacio */
+}
+
+.card-text h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-family: 'Muli', sans-serif;
+    color: black;
+    font-family: 'ITCAvantGardeStd-Bk', sans-serif;
+}

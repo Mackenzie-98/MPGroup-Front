@@ -1,0 +1,54 @@
+<div class="cut-section-container flex items-center justify-center h-screen">
+  <div class="cut-section bg-white p-6 rounded-3xl shadow-lg w-full max-w-md">
+    <h2 class="title text-2xl text-gray-800 text-center mb-6">Recalcular Consumo</h2>
+
+    <div class="inputs-group grid grid-cols-1 gap-4 mb-6">
+      <div class="input-field">
+        <label for="genericNumber" class="text-sm text-gray-600">Genérico</label>
+        <input type="text" id="genericNumber" [(ngModel)]="genericNumber"
+          class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
+      </div>
+      <div class="input-field">
+        <label for="orderNumber" class="text-sm text-gray-600">Número de orden</label>
+        <input type="text" id="orderNumber" [(ngModel)]="orderNumber"
+          class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
+      </div>
+      <div class="input-field">
+        <label for="width" class="text-sm text-gray-600">Nuevo ancho</label>
+        <input type="number" id="width" [(ngModel)]="width"
+          class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
+      </div>
+    </div>
+
+    <div class="buttons grid grid-cols-1 gap-2">
+      <button (click)="checkCut()"
+        class="bg-black-500 hover:bg-black-600 text-white py-3 rounded-lg w-full">Validar</button>
+    </div>
+
+    <!-- Modal de Recalcular -->
+    <div *ngIf="showRecalculateModal" class="modal-overlay" (click)="closeRecalculateModal()">
+      <div class="modal-content"
+        [ngClass]="{'success-modal': modalTitle === 'Recalculo Exitoso', 'simple-modal': modalTitle !== 'Recalculo Exitoso'}"
+        (click)="$event.stopPropagation()">
+        <!-- Mostrar icono de éxito solo si es modal de éxito -->
+        <div *ngIf="modalTitle === 'Recalculo Exitoso'" class="flex justify-center items-center mb-4">
+          <i class="fas fa-check-circle text-green-500 text-4xl"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">{{ modalTitle }}</h3>
+        <p class="text-gray-700 text-center">{{ modalMessage }}</p>
+        <div class="modal-buttons flex justify-center gap-4 mt-4">
+          <!-- Botón Recalcular solo si se requiere confirmación -->
+          <button *ngIf="showConfirmButton" (click)="confirmRecalculate()"
+            class="bg-black text-white py-2 px-4 rounded-lg">
+            Recalcular
+          </button>
+          <!-- Botón Cerrar siempre visible -->
+          <button (click)="closeRecalculateModal()"
+            class="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg border border-gray-300">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

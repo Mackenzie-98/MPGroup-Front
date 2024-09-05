@@ -1,0 +1,64 @@
+.home-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    max-width: 300px;
+    text-align: center;
+    overflow: hidden;
+    /* Asegura que los bordes de la imagen también se redondeen */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-text {
+    padding: 20px;
+}
+
+.card-text h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-family: 'Muli', sans-serif;
+    color: black;
+    font-family: 'ITCAvantGardeStd-Bk', sans-serif;
+}
+
+.card-text {
+    padding: 10px 0;
+    /* Reduce el padding superior e inferior */
+    width: fit-content;
+    margin: 0 auto;
+
+    /* Centra el contenedor */
+}

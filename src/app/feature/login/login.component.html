@@ -1,0 +1,25 @@
+<div class="login-container flex items-center justify-center h-screen bg-gray-300 overflow-hidden">
+    <div class="login-box bg-white p-8 rounded-3xl shadow-lg max-w-sm w-full relative">
+        <div class="text-center mb-6">
+            <img src="assets/menu.png" alt="Logo" class="mx-auto h-12">
+            <h2 class="text-2xl font-bold text-gray-800 mt-2"></h2>
+        </div>
+        <form (ngSubmit)="onSubmit()" class="flex flex-col items-center">
+            <div class="mb-4 w-full">
+                <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Usuario</label>
+                <input type="text" id="username" [(ngModel)]="username" name="username" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6 w-full">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
+                <input type="password" id="password" [(ngModel)]="password" name="password" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="flex items-center justify-center w-full">
+                <button type="submit" class="btn-primary w-full md:w-auto">Entrar</button>
+            </div>
+        </form>
+        <!-- Spinner de carga -->
+        <div *ngIf="isLoading" class="spinner"></div>
+    </div>
+</div>

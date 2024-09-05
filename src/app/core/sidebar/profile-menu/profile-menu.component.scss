@@ -1,0 +1,99 @@
+.profile-container {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    font-family: 'ITCAvantGardeStd-Bk', sans-serif;
+}
+
+.profile-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.profile-img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    width: 250px;
+    padding: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    font-weight: bold;
+    margin: 0;
+    font-size: 1em;
+}
+
+.profile-email {
+    margin: 0;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.profile-menu-items {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.profile-menu-item {
+    width: 100%;
+    padding: 10px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: #333;
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.profile-menu-item i {
+    margin-right: 10px;
+}
+
+.profile-menu-item:hover {
+    background-color: #f0f0f0;
+}

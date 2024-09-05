@@ -1,0 +1,9 @@
+<div class="main-layout">
+    <app-profile-menu *ngIf="isUserAuthenticated"></app-profile-menu>
+    <app-sidebar *ngIf="isUserAuthenticated" [isSidebarCollapsed]="isSidebarCollapsed"></app-sidebar>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>
