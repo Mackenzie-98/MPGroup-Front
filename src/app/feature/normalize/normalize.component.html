@@ -5,12 +5,14 @@
         <div class="inputs-group grid grid-cols-1 gap-4 mb-6">
             <div class="input-field">
                 <label for="nroMuestra" class="text-sm text-gray-600">Nro. de Muestra</label>
-                <input type="text" id="nroMuestra" [(ngModel)]="nroMuestra"
+                <input type="text" id="nroMuestra" [(ngModel)]="nroMuestra" (input)="transformToUppercase('nroMuestra')"
+                    (keypress)="allowOnlyAlphanumeric($event)"
                     class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
             </div>
             <div class="input-field">
                 <label for="nroGenerico" class="text-sm text-gray-600">Generico</label>
-                <input type="text" id="nroGenerico" [(ngModel)]="nroGenerico"
+                <input type="text" id="nroGenerico" (input)="transformToUppercase('nroGenerico')"
+                    [(ngModel)]="nroGenerico" (keypress)="allowOnlyAlphanumeric($event)"
                     class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
             </div>
         </div>
@@ -24,17 +26,8 @@
         </app-notification-bar>
     </div>
 
-    <!-- Modal de confirmación, idéntico al de Calculator -->
-    <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-            <h3 class="text-lg font-bold mb-4">Confirmación de Sobrescritura</h3>
-            <p class="text-gray-600 mb-4">{{ conflictMessage }}</p>
-            <div class="modal-buttons flex justify-end gap-4">
-                <button (click)="confirmOverwrite()"
-                    class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg">Sí, Sobreescribir</button>
-                <button (click)="closeModal()"
-                    class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">Cancelar</button>
-            </div>
-        </div>
-    </div>
+    <!-- Modal para la confirmación de sobrescritura -->
+    <app-modal *ngIf="showModal" [modalTitle]="modalTitle" [modalMessage]="modalMessage"
+        [showConfirmButton]="showConfirmButton" [isSuccess]="false" (onClose)="closeModal()"
+        (onConfirm)="confirmOverwrite()"></app-modal>
 </div>

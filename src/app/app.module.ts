@@ -21,10 +21,11 @@ import { CorteInfoComponent } from './feature/consultar-info/corte-info/corte-in
 import { IngenieriaInfoComponent } from './feature/consultar-info/ingenieria-info/ingenieria-info.component';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
 import { ProfileMenuComponent } from './core/sidebar/profile-menu/profile-menu.component';
+import { ModalComponent } from './core/modal/modal.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'calculator', component: CalculatorComponent, canActivate: [AuthGuard] },
     { path: 'cut-section', component: CutSectionComponent, canActivate: [AuthGuard] },
@@ -32,7 +33,7 @@ const routes: Routes = [
     { path: 'normalizar', component: NormalizeComponent, canActivate: [AuthGuard] },
     { path: 'consultar-ingenieria', component: IngenieriaInfoComponent, canActivate: [AuthGuard] },
     { path: 'consultar-corte', component: CorteInfoComponent, canActivate: [AuthGuard] },
-    { path: '**', redirectTo: '/login' }
+    { path: '**', redirectTo: '/home' }
 ];
 
 @NgModule({
@@ -48,7 +49,8 @@ const routes: Routes = [
         ConsultarInfoComponent,
         NormalizeComponent,
         SidebarComponent,
-        ProfileMenuComponent
+        ProfileMenuComponent,
+        ModalComponent
     ],
     imports: [
         BrowserModule,

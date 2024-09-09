@@ -1,0 +1,47 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+}
+
+.simple-modal {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 1.5rem;
+    border-radius: 24px;
+    color: #333;
+}
+
+.success-modal {
+    background-color: #f0fff4;
+    border: 2px solid #2f855a;
+    padding: 2rem;
+    border-radius: 24px;
+    color: #333;
+}
+
+.text-green-500 {
+    color: #48bb78;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}

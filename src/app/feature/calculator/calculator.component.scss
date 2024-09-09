@@ -88,6 +88,11 @@ table tr:nth-child(odd) {
     background-color: #f5f5f5;
 }
 
+table td input,
+#ancho {
+    text-align: center;
+}
+
 button:hover {
     opacity: 0.7;
 }
@@ -227,8 +232,12 @@ button:hover {
 .modal-input {
     border: 1px solid #ccc;
     border-radius: 0.375rem;
-    padding: 0.1rem;
+    padding: 0.5rem;
+    /* Asegura un padding consistente */
+    height: 2.5rem;
+    /* Altura fija para asegurar que el select y el input sean iguales */
     width: 100%;
+    font-size: 1rem;
 }
 
 .modal-buttons {
@@ -242,6 +251,12 @@ button.modal-button {
     padding: 0.5rem 1rem;
 }
 
-.uppercase {
+input {
     text-transform: uppercase;
+}
+
+s .small-input {
+    max-width: 80px;
+    width: 100%;
+    padding-right: 2rem;
 }

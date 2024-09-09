@@ -38,9 +38,12 @@
         </div>
         <div class="input-field" *ngIf="!anchoDeshabilitado">
           <label for="ancho" class="text-sm text-gray-600">Ancho</label>
-          <input type="number" id="ancho" [(ngModel)]="ancho"
-            class="mt-1 p-1 rounded bg-gray-100 border border-gray-300 text-gray-800 text-sm w-full min-w-[120px]"
-            placeholder="Introduce el ancho...">
+          <div class="relative">
+            <input type="number" id="ancho" [(ngModel)]="ancho"
+              class="mt-1 p-1 pr-10 rounded bg-gray-100 border border-gray-300 text-gray-800 text-sm w-full min-w-[120px]"
+              placeholder="Introduce el ancho...">
+            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-sm">cm</span>
+          </div>
           <div *ngIf="ancho <= 0 && !anchoDeshabilitado" class="error">Debe ser mayor a 0</div>
         </div>
 
@@ -56,24 +59,24 @@
       <div id="medidasContainer" class="w-full md:w-[48%] relative overflow-x-auto">
         <div class="overflow-y-auto max-h-36">
           <table class="w-full text-sm text-left text-gray-700">
-            <thead class="text-xs uppercase bg-gray-200 text-gray-700">
+            <thead class="text-xs bg-gray-200 text-gray-700">
               <tr>
-                <th scope="col" class="px-4 py-2 bg-gray-100">Medida</th>
-                <th scope="col" class="px-4 py-2 bg-gray-100">Escalado</th>
+                <th scope="col" class="px-4 py-2 bg-gray-100">Medida (cm)</th>
+                <th scope="col" class="px-4 py-2 bg-gray-100">Escalado (cm)</th>
                 <th scope="col" class="px-4 py-2 bg-gray-100">Acciones</th>
               </tr>
             </thead>
-            <tbody (paste)="handlePaste($event)">
+            <tbody>
               <tr *ngFor="let medida of medidas; index as i" class="bg-white border-b border-gray-200">
                 <td class="px-4 py-2">
-                  <div contenteditable="true" class="bg-transparent text-black w-full text-sm feedback"
-                    (input)="updateMedida($event, i, 'value')" [textContent]="medida.value">
-                  </div>
+                  <input type="text" [(ngModel)]="medidas[i].value" (input)="sanitizeInput(i, 'value')"
+                    (keypress)="preventInvalidCharacters($event)"
+                    class="bg-transparent text-black w-full text-sm p-1 border border-gray-300 rounded" placeholder="0">
                 </td>
                 <td class="px-4 py-2">
-                  <div contenteditable="true" class="bg-transparent text-black w-full text-sm feedback"
-                    (input)="updateMedida($event, i, 'escala')" [textContent]="medida.escala">
-                  </div>
+                  <input type="text" [(ngModel)]="medidas[i].escala" (input)="sanitizeInput(i, 'escala')"
+                    (keypress)="preventInvalidCharacters($event)"
+                    class="bg-transparent text-black w-full text-sm p-1 border border-gray-300 rounded" placeholder="0">
                 </td>
                 <td class="px-4 py-2">
                   <button class="btn-delete" (click)="removeMedida(i)">
@@ -105,7 +108,7 @@
         <tbody>
           <tr *ngFor="let resultado of resultados" class="bg-white border-b border-gray-200">
             <td class="px-4 py-2 text-black">{{ resultado.label }}</td>
-            <td class="px-4 py-2 text-black">{{ resultado.value }}</td>
+            <td class="px-4 py-2 text-black">{{ resultado.value }} cm</td>
             <td class="px-4 py-2">
               <button *ngIf="optSesgo != 2" class="text-blue-500 feedback"
                 (click)="mostrarDetalle(resultado.talla) ">Ver Detalle</button>
@@ -119,21 +122,33 @@
       </div>
     </div>
 
-    <!-- Modal para ingresar Nro. Muestra -->
     <div *ngIf="showSaveModal" class="modal-overlay" (click)="closeSaveModal()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <h3 class="text-lg font-bold mb-4">Guardar Datos</h3>
-        <div class="mb-4">
-          <label for="nroMuestra" class="block text-sm font-medium text-gray-700">Nro. Muestra</label>
-          <input type="text" id="nroMuestra" [(ngModel)]="nroMuestra" (keypress)="allowOnlyAlphanumeric($event)"
-            class="modal-input uppercase" />
-          <div class="modal-buttons">
-            <app-button type="secondary" class="modal-button" (click)="closeSaveModal()">Cancelar</app-button>
-            <app-button type="primary" class="modal-button" (click)="saveData()">Guardar</app-button>
+        <div class="mb-4 flex gap-4">
+          <!-- Campo de Nro. Muestra -->
+          <div class="flex-1">
+            <label for="nroMuestra" class="block text-sm font-medium text-gray-700">Nro. Muestra</label>
+            <input type="text" id="nroMuestra" [(ngModel)]="nroMuestra" (keypress)="allowOnlyAlphanumeric($event)"
+              (input)="transformToUppercase('nroMuestra')" class="modal-input uppercase" />
           </div>
+
+          <div class="flex-1">
+            <label for="sesgo" class="block text-sm font-medium text-gray-700">Medida Sesgo</label>
+            <select id="sesgo" [(ngModel)]="sesgo" class="modal-input">
+              <option value="" disabled [selected]="sesgo === ''">Elija el sesgo</option>
+              <option *ngFor="let option of sesgoOptions" [value]="option">{{ option }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-buttons">
+          <app-button type="secondary" class="modal-button" (click)="closeSaveModal()">Cancelar</app-button>
+          <app-button type="primary" class="modal-button" (click)="saveData()">Guardar</app-button>
         </div>
       </div>
     </div>
+
 
     <div *ngIf="detalleSeleccionado && detallesPorTalla[detalleSeleccionado.talla]"
       class="detalle-container bg-white p-4 rounded-lg mt-6">

@@ -28,6 +28,14 @@ export class CalculatorComponent {
   anchoDeshabilitado: boolean = false;
   successMessage: string = '';
   infoMessage: string = '';
+  sesgoOptions: string[] = [];
+  sesgo: string = '';
+  sesgoList: { [key: number]: string[] } = {
+    1: ['1', '2,1', '2,2', '2,7', '3,2', '3,7', '4,2', '4,7', '5,2', '5,7', '6,2', '7,2', '7,7', '8,2'],
+    2: ['1', '1,9', '2,1', '2,2', '2,7', '3', '3,2', '3,7', '4,2', '4,7', '5,2', '5,7', '6,2', '7,2', '7,7', '8,2'],
+    3: ['2,7', '3,2', '3,7', '4,2', '4,7', '5,2', '5,7']
+  };
+
 
 
   showSaveModal = false;
@@ -37,6 +45,11 @@ export class CalculatorComponent {
 
   ngOnInit() {
     this.actualizarTallas();
+    this.updateSesgoOptions();
+  }
+
+  updateSesgoOptions() {
+    this.sesgoOptions = this.sesgoList[this.optSesgo];
   }
 
   allowOnlyAlphanumeric(event: KeyboardEvent): void {
@@ -77,7 +90,6 @@ export class CalculatorComponent {
       ];
     }
 
-    // Encontrar la talla con value 0 y asignarla a tallaInicial
     const defaultTalla = this.tallas.find(talla => talla.value === 0);
     this.tallaInicial = defaultTalla ? defaultTalla.value : this.tallas[0].value;
 
@@ -91,20 +103,22 @@ export class CalculatorComponent {
   closeSaveModal() {
     this.showSaveModal = false;
     this.nroMuestra = "";
+    this.sesgo = '';
   }
 
 
   saveData() {
-    if (this.nroMuestra === null) {
-      this.errorMessage = 'Por favor, complete todos los campos.';
+    if (!this.nroMuestra || !this.sesgo) {
+      this.errorMessage = 'Por favor, complete todos los campos obligatorios.';
       return;
     }
-    console.log(this.nroMuestra)
 
     if (!this.nroMuestra.match(/^[a-zA-Z0-9]+$/)) {
       this.errorMessage = 'El Nro. Muestra debe contener solo letras y números.';
       return;
     }
+
+    const formattedSesgo = this.replaceDotWithComma(this.sesgo);
 
     const dataToSave = {
       nroMuestra: this.nroMuestra,
@@ -115,7 +129,8 @@ export class CalculatorComponent {
       tallas: this.tallas,
       medidas: this.medidas,
       resultados: this.resultados,
-      detalles: this.detallesPorTalla
+      detalles: this.detallesPorTalla,
+      sesgo: parseFloat(formattedSesgo),
     };
 
     this.calculatorService.saveCalculation(dataToSave).subscribe(
@@ -127,7 +142,7 @@ export class CalculatorComponent {
         this.reiniciar();
       },
       error => {
-        this.errorMessage = 'Error al guardar los datos. Inténtelo de nuevo. ', error;
+        this.errorMessage = error.error.message || 'Error al guardar el cálculo.';
         setTimeout(() => this.closeError(), 10000);
       }
     );
@@ -199,71 +214,6 @@ export class CalculatorComponent {
     );
   }
 
-  // // Ajuste de ancho adicional si es "Al Sesgo"
-  // if (this.optSesgo == 3) {
-  //   this.ancho += 0.5 * this.ancho; // Incrementar el ancho en un 50%
-  // }
-  // console.log(this.ancho)
-
-  // const factorInicial = this.tallaInicial;
-
-  // if (this.optSesgo == 2) { // Lógica para "Al Hilo"
-  //   this.tallas.forEach((talla) => {
-  //     const factor = talla.value - factorInicial;
-  //     const sumaMedidas = this.medidas.reduce((acumulado, medida) => {
-  //       return acumulado + medida.value + (factor * medida.escala);
-  //     }, 0);
-
-  //     if (sumaMedidas <= 0) {
-  //       this.infoMessage = `Los resultados para las tallas que no se muestran son iguales o menores a 0.`;
-  //       setTimeout(() => this.closeInfo(), 10000);
-  //       return;
-  //     }
-
-  //     this.resultados.push({
-  //       label: `Consumo Talla ${talla.key}:`,
-  //       value: (sumaMedidas + sumaMedidas * 0.05).toFixed(2),
-  //       talla: talla.key,
-  //     });
-  //   });
-
-  // } else { // Lógica para "Al Traves" y "Al Sesgo"
-  //   this.tallas.forEach((talla) => {
-  //     const factor = talla.value - factorInicial;
-  //     const medidasTalla = this.medidas.map(
-  //       (medida) => medida.value + (factor * medida.escala)
-  //     );
-
-  //     const medidaMaxima = Math.max(...medidasTalla);
-
-  //     if (medidaMaxima > this.ancho) {
-  //       this.infoMessage = `Los resultados para las tallas que no se muestran superan el ancho disponible.`;
-  //       setTimeout(() => this.closeInfo(), 10000);
-  //       return;
-  //     }
-
-  //     const medidaMinima = Math.min(...medidasTalla);
-
-  //     if (medidaMinima <= 0) {
-  //       this.infoMessage = `Las medidas para la talla ${talla.key} no pueden ser inferiores a 1.`;
-  //       setTimeout(() => this.closeInfo(), 10000);
-  //       return;
-  //     }
-
-  //     const consumoPorTalla = this.calcularConsumoPorTalla(this.ancho, medidasTalla);
-
-  //     this.detallesPorTalla[talla.key] = consumoPorTalla;
-
-  //     this.resultados.push({
-  //       label: `Consumo Talla ${talla.key}:`,
-  //       value: consumoPorTalla.consumo.toFixed(2),
-  //       talla: talla.key,
-  //     });
-  //   });
-  // }
-
-  // this.resultadosCalculados = this.resultados.length > 0;
-
   reiniciar() {
     this.ancho = 0;
     this.medidas = [{ value: 0, escala: 0 }];
@@ -291,6 +241,7 @@ export class CalculatorComponent {
   }
 
   toggleAnchoState() {
+    this.updateSesgoOptions();
     if (this.optSesgo == 2) {
       this.ancho = 0;
       this.anchoDeshabilitado = true;
@@ -349,9 +300,14 @@ export class CalculatorComponent {
   }
 
 
-  updateMedida(event: any, index: number, field: 'value' | 'escala') {
-    const value = event.target.innerText.trim();
-    const numericValue = parseFloat(value);
+  sanitizeInput(index: number, field: 'value' | 'escala') {
+    let value = this.medidas[index][field].toString().replace(',', '.');
+
+    // Permitir solo números, puntos y comas
+    const sanitizedValue = value.replace(/[^0-9.,]/g, '');
+
+    // Convertir el valor a número flotante si es posible
+    const numericValue = parseFloat(sanitizedValue);
 
     if (!isNaN(numericValue)) {
       this.medidas[index][field] = numericValue;
@@ -380,4 +336,23 @@ export class CalculatorComponent {
       }
     });
   }
+
+  replaceDotWithComma(value: string): string {
+    return value.replace(',', '.');
+  }
+
+  preventInvalidCharacters(event: KeyboardEvent) {
+    const char = event.key;
+
+    if (!/[0-9.,]/.test(char) && !['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(char)) {
+      event.preventDefault();
+    }
+  }
+
+  transformToUppercase(field: string) {
+    if (field === 'nroMuestra') {
+      this.nroMuestra = this.nroMuestra.toUpperCase();
+    }
+  }
+
 }

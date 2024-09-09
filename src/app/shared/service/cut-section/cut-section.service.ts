@@ -12,8 +12,8 @@ export class CutSectionService {
 
     constructor(private http: HttpClient) { }
 
-    validateCut(nroGenerico: string, nroOrden: string, nuevoAncho: number): Observable<any> {
-        return this.http.post(`${this.baseUrl}/validate`, { nroGenerico, nroOrden, nuevoAncho });
+    validateCut(genericNumber: string, orderNumber: string, width: number): Observable<any> {
+        return this.http.post(`${this.baseUrl}/validate`, { genericNumber, orderNumber, width });
     }
 
     recalculateCut(genericNumber: string, orderNumber: string, width: number): Observable<any> {

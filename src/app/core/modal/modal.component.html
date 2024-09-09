@@ -1,0 +1,19 @@
+<div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" [ngClass]="{'success-modal': isSuccess, 'simple-modal': !isSuccess}"
+        (click)="$event.stopPropagation()">
+
+        <!-- Mostrar ícono de éxito si es un modal de éxito -->
+        <div *ngIf="isSuccess" class="flex justify-center items-center mb-4">
+            <i class="fas fa-check-circle text-green-500 text-4xl"></i>
+        </div>
+
+        <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">{{ modalTitle }}</h3>
+        <p class="text-gray-700 text-center">{{ modalMessage }}</p>
+
+        <div class="modal-buttons flex justify-center gap-4 mt-4">
+            <!-- Botón de confirmación solo si se requiere -->
+            <app-button *ngIf="showConfirmButton" type="primary" (click)="confirmAction()">Confirmar</app-button>
+            <app-button type="secondary" (click)="closeModal()">Cerrar</app-button>
+        </div>
+    </div>
+</div>

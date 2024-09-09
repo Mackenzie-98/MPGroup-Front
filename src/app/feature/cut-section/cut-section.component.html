@@ -6,11 +6,13 @@
       <div class="input-field">
         <label for="genericNumber" class="text-sm text-gray-600">Genérico</label>
         <input type="text" id="genericNumber" [(ngModel)]="genericNumber"
+          (input)="transformToUppercase('genericNumber')" (keypress)="allowOnlyAlphanumeric($event)"
           class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
       </div>
       <div class="input-field">
         <label for="orderNumber" class="text-sm text-gray-600">Número de orden</label>
-        <input type="text" id="orderNumber" [(ngModel)]="orderNumber"
+        <input type="text" id="orderNumber" [(ngModel)]="orderNumber" (input)="transformToUppercase('orderNumber')"
+          (keypress)="allowOnlyAlphanumeric($event)"
           class="mt-1 p-2 rounded bg-gray-100 border border-gray-300 text-gray-800 w-full">
       </div>
       <div class="input-field">
@@ -20,34 +22,58 @@
       </div>
     </div>
 
-    <div class="buttons grid grid-cols-1 gap-2">
-      <button (click)="checkCut()"
-        class="bg-black-500 hover:bg-black-600 text-white py-3 rounded-lg w-full">Validar</button>
+    <div class="buttons col-span-2 flex justify-center gap-4 w-full md:w-auto flex-wrap">
+      <app-button type="primary" class="w-full md:w-auto flex-1 md:flex-none" (click)="checkCut()">Validar</app-button>
+      <app-button type="secondary" class="w-full md:w-auto flex-1 md:flex-none"
+        (click)="resetForm()">Reiniciar</app-button>
+    </div>
+    <br>
+
+    <app-modal *ngIf="showRecalculateModal" [modalTitle]="modalTitle" [modalMessage]="modalMessage"
+      [showConfirmButton]="showConfirmButton" [isSuccess]="modalTitle === 'Recalculo Exitoso'"
+      (onClose)="closeRecalculateModal()" (onConfirm)="confirmRecalculate()"></app-modal>
+
+    <div class="results-container"
+      *ngIf="!detalleSeleccionado && recalculationResults && recalculationResults.length > 0">
+      <table class="w-full text-sm text-left text-gray-700">
+        <thead class="text-xs uppercase bg-gray-200 text-gray-700">
+          <tr>
+            <th scope="col" class="px-4 py-2 bg-gray-100">Sentido</th>
+            <th scope="col" class="px-4 py-2 bg-gray-100 text-center">Sesgo</th>
+            <th scope="col" class="px-4 py-2 bg-gray-100">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let resultado of recalculationResults" class="bg-white border-b border-gray-200">
+            <td class="px-4 py-2 text-black">{{ resultado.sentido }}</td>
+            <td class="px-4 py-2 text-black text-center">{{ resultado.sesgo }} cm</td>
+            <td class="px-4 py-2">
+              <app-button type="secondary" (click)="mostrarDetalle(resultado.detalles)">Ver Detalle</app-button>
+              <!-- Usando componente app-button -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Modal de Recalcular -->
-    <div *ngIf="showRecalculateModal" class="modal-overlay" (click)="closeRecalculateModal()">
-      <div class="modal-content"
-        [ngClass]="{'success-modal': modalTitle === 'Recalculo Exitoso', 'simple-modal': modalTitle !== 'Recalculo Exitoso'}"
-        (click)="$event.stopPropagation()">
-        <!-- Mostrar icono de éxito solo si es modal de éxito -->
-        <div *ngIf="modalTitle === 'Recalculo Exitoso'" class="flex justify-center items-center mb-4">
-          <i class="fas fa-check-circle text-green-500 text-4xl"></i>
-        </div>
-        <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">{{ modalTitle }}</h3>
-        <p class="text-gray-700 text-center">{{ modalMessage }}</p>
-        <div class="modal-buttons flex justify-center gap-4 mt-4">
-          <!-- Botón Recalcular solo si se requiere confirmación -->
-          <button *ngIf="showConfirmButton" (click)="confirmRecalculate()"
-            class="bg-black text-white py-2 px-4 rounded-lg">
-            Recalcular
-          </button>
-          <!-- Botón Cerrar siempre visible -->
-          <button (click)="closeRecalculateModal()"
-            class="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg border border-gray-300">
-            Cerrar
-          </button>
-        </div>
+    <!-- Detalle de la talla seleccionada -->
+    <div *ngIf="detalleSeleccionado" class="detalle-container bg-white p-6 rounded-3xl shadow-lg w-full max-w-md">
+      <table class="w-full text-sm text-left text-gray-700">
+        <thead class="text-xs uppercase bg-gray-200 text-gray-700">
+          <tr>
+            <th scope="col" class="px-4 py-2 bg-gray-100 text-center">Talla</th>
+            <th scope="col" class="px-4 py-2 bg-gray-100 text-center">Consumo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detalle of detalleSeleccionado" class="bg-white border-b border-gray-200">
+            <td class="px-4 py-2 text-black text-center">{{ detalle.talla }}</td>
+            <td class="px-4 py-2 text-black text-center">{{ detalle.consumo }} cm</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="flex justify-start mt-2">
+        <app-button type="secondary" (click)="ocultarDetalle()">Atrás</app-button> <!-- Usando componente app-button -->
       </div>
     </div>
   </div>
