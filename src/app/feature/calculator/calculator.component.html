@@ -168,7 +168,7 @@
               {{ detallesPorTalla[detalleSeleccionado.talla].mpAnchos[i + 1].join(', ') }}
             </td>
             <td class="px-4 py-2 text-black">
-              {{ (ancho * (1.0 / Math.floor(ancho / anchoUsado))).toFixed(2) }}
+              {{ calcularConsumo(anchoUsado) }}
             </td>
           </tr>
         </tbody>

@@ -355,4 +355,10 @@ export class CalculatorComponent {
     }
   }
 
+  calcularConsumo(anchoUsado: number): number {
+    let curAncho = this.ancho;
+    if (this.optSesgo == 3)
+      curAncho += 0.5 * curAncho
+    return +(curAncho * (1.0 / Math.floor(curAncho / anchoUsado))).toFixed(2);
+  }
 }
