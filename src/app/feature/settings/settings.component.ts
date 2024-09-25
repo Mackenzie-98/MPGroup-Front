@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/service/auth/auth.service';
 import { User } from '../../shared/model/user/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../shared/service/users/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -16,7 +17,7 @@ export class SettingsComponent implements OnInit {
   errorMessage = '';
 
   constructor(
-    private authService: AuthService,
+    private usersService: UserService,
     private fb: FormBuilder
   ) { }
 
@@ -29,16 +30,10 @@ export class SettingsComponent implements OnInit {
     if (userDataString) {
       const userData = JSON.parse(userDataString);
       if (userData && userData.username) {
-        this.authService.getUser(userData.username).subscribe(
-          (user: User) => {
-            this.user = user;
-            this.initializeForm();
-          },
-          (error) => {
-            this.errorMessage = 'Error al obtener los datos del usuario.';
-            console.error(error);
-          }
-        );
+        this.user = userData;
+        this.initializeForm();
+      } else {
+        this.errorMessage = 'No se encontró información del usuario.';
       }
     } else {
       this.errorMessage = 'No se encontró información del usuario.';
@@ -52,12 +47,12 @@ export class SettingsComponent implements OnInit {
       area: [this.user.area, Validators.required],
       password: [''],
       confirmPassword: ['']
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(form: FormGroup): null | { mismatch: true } {
-    const password = this.passwordControl?.value;
-    const confirmPassword = this.confirmPasswordControl?.value;
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
 
     if (password && password !== confirmPassword) {
       return { mismatch: true };
@@ -74,45 +69,31 @@ export class SettingsComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
 
-    const nameControl = this.profileForm.get('name');
-    const areaControl = this.profileForm.get('area');
-    const passwordControl = this.profileForm.get('password');
+    const updatedData: any = {
+      name: this.profileForm.get('name')?.value,
+      area: this.profileForm.get('area')?.value,
+    };
 
-    if (nameControl && areaControl) {
-      const updatedData: any = {
-        name: nameControl.value,
-        area: areaControl.value,
-      };
+    const password = this.profileForm.get('password')?.value;
 
-      if (passwordControl && passwordControl.value) {
-        updatedData.password = passwordControl.value;
-      }
-
-      this.authService.updateUser(this.user.username, updatedData).subscribe(
-        (updatedUser: User) => {
-          this.isLoading = false;
-          this.successMessage = 'Perfil actualizado con éxito.';
-          // Actualizar los datos en localStorage
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-          // Reiniciar el formulario
-          this.profileForm.reset({
-            username: updatedUser.username,
-            name: updatedUser.name,
-            area: updatedUser.area,
-            password: '',
-            confirmPassword: ''
-          });
-        },
-        (error) => {
-          this.isLoading = false;
-          this.errorMessage = 'Error al actualizar el perfil.';
-          console.error(error);
-        }
-      );
-    } else {
-      this.isLoading = false;
-      this.errorMessage = 'Error en el formulario.';
+    if (password) {
+      updatedData.password = password;
     }
+
+    this.usersService.updateUser(this.user.username, updatedData).subscribe(
+      (updatedUser: User) => {
+        this.isLoading = false;
+        this.successMessage = 'Perfil actualizado con éxito.';
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        this.user = updatedUser;
+        this.initializeForm();
+      },
+      (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Error al actualizar el perfil.';
+        console.error(error);
+      }
+    );
   }
 
   get nameControl() {

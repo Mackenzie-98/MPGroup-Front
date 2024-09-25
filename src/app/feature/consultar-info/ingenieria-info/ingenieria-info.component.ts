@@ -9,7 +9,9 @@ import { Calculation } from '../../../shared/model/calculator/calculation';
 })
 export class IngenieriaInfoComponent implements OnInit {
   calculations: Calculation[] = [];
+  filteredCalculations: Calculation[] = [];
   selectedCalculation: Calculation | null = null;
+  searchTerm: string = '';
 
   constructor(private calculatorService: CalculatorService) { }
 
@@ -21,10 +23,26 @@ export class IngenieriaInfoComponent implements OnInit {
     this.calculatorService.getAllCalculations().subscribe(
       (data: Calculation[]) => {
         this.calculations = data;
+        this.filteredCalculations = data; // Inicialmente, los datos filtrados son todos
       },
       (error) => {
         console.error('Error al obtener los cálculos', error);
       }
+    );
+  }
+
+  applyFilter(): void {
+    const term = this.searchTerm.toLowerCase();
+
+    this.filteredCalculations = this.calculations.filter(calculation =>
+      calculation.nroMuestra.toString().toLowerCase().includes(term) ||
+      (calculation.nroGenerico && calculation.nroGenerico.toLowerCase().includes(term)) ||
+      this.getSentidoLabel(calculation.sentido).toLowerCase().includes(term) ||
+      calculation.linea.toLowerCase().includes(term) ||
+      calculation.tallaBase.toString().toLowerCase().includes(term) ||
+      calculation.sesgo.toString().toLowerCase().includes(term) ||
+      calculation.createdBy.toLowerCase().includes(term) ||
+      calculation.dateCreated.toLocaleString().toLowerCase().includes(term)
     );
   }
 
