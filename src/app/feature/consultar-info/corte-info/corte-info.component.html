@@ -1,1 +1,77 @@
-<p>corte-info works!</p>
+<div class="corte-info-container">
+    <h2 class="title">Recalculos del Área de Corte</h2>
+
+    <table class="recalculations-table" *ngIf="!selectedRecalculation">
+        <thead>
+            <tr>
+                <th>Nro. Genérico</th>
+                <th>Nro. Orden</th>
+                <th>Nuevo Ancho</th>
+                <th>Creado Por</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let recalculation of recalculations">
+                <td>{{ recalculation.nroGenerico }}</td>
+                <td>{{ recalculation.nroOrden }}</td>
+                <td>{{ recalculation.nuevoAncho }} cm</td>
+                <td>{{ recalculation.createdBy }}</td>
+                <td>{{ recalculation.dateCreated | date: 'short' }}</td>
+                <td>
+                    <button (click)="viewDetails(recalculation)">Ver Detalles</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Detalles del recalculo seleccionado -->
+    <div *ngIf="selectedRecalculation" class="recalculation-details">
+        <h3>Detalles del Recalculo - Genérico {{ selectedRecalculation.nroGenerico }}</h3>
+        <p><strong>Nro. Orden:</strong> {{ selectedRecalculation.nroOrden }}</p>
+        <p><strong>Nuevo Ancho:</strong> {{ selectedRecalculation.nuevoAncho }} cm</p>
+        <p><strong>Resultados:</strong></p>
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Sentido</th>
+                    <th>Sesgo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of selectedRecalculation.resultados">
+                    <td>{{ result.sentido }}</td>
+                    <td>{{ result.sesgo }} cm</td>
+                    <td>
+                        <button (click)="viewResultDetails(result)">Ver Detalles</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="closeDetails()">Cerrar Detalles</button>
+    </div>
+
+    <!-- Detalles del resultado seleccionado -->
+    <div *ngIf="selectedResult" class="result-details">
+        <h3>Detalles del Resultado - Sentido {{ selectedResult.sentido }}</h3>
+        <p><strong>Sesgo:</strong> {{ selectedResult.sesgo }} cm</p>
+        <p><strong>Detalles:</strong></p>
+        <table class="detalle-table">
+            <thead>
+                <tr>
+                    <th>Talla</th>
+                    <th>Consumo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let detalle of selectedResult.detalles">
+                    <td>{{ detalle.talla }}</td>
+                    <td>{{ detalle.consumo }} cm</td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="closeResultDetails()">Cerrar Detalles del Resultado</button>
+    </div>
+</div>

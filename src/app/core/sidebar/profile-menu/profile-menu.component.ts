@@ -58,4 +58,9 @@ export class ProfileMenuComponent implements OnInit {
       this.isProfileMenuOpen = false;
     }
   }
+
+  navigateToProfile() {
+    this.router.navigate(['/perfil']);
+    this.isProfileMenuOpen = false; // Cierra el menú al navegar
+  }
 }

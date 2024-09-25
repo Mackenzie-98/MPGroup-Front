@@ -1,36 +1,77 @@
-.home-container {
-    text-align: center;
+.settings-container {
+    max-width: 600px;
+    margin: 0 auto;
     padding: 20px;
+    font-family: 'ITCAvantGardeStd-Bk', sans-serif;
 }
 
-.card-container {
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+.profile-form {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group input:disabled {
+    background-color: #f5f5f5;
+}
+
+.error {
+    color: #c53030;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.form-actions {
+    text-align: center;
+}
+
+.form-actions button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-actions button:hover {
+    background-color: #444;
+}
+
+.success-message {
+    color: #2f855a;
+    font-size: 1em;
+    text-align: center;
     margin-top: 20px;
 }
 
-.card {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.card h3 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #007bff;
-}
-
-.card p {
-    margin: 10px 0 0;
-    color: #666;
+.error-message {
+    color: #c53030;
+    font-size: 1em;
+    text-align: center;
+    margin-top: 20px;
 }

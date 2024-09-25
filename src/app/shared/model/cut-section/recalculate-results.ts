@@ -14,3 +14,13 @@ export interface RecalculationResponse {
     message: string;
     recalculatedResults: RecalculatedResult[];
 }
+
+export interface CorteRecalculation {
+    id: number;
+    nroGenerico: string;
+    nroOrden: string;
+    nuevoAncho: number;
+    resultados: RecalculatedResult[];
+    createdBy: string;
+    dateCreated: Date;
+}

@@ -1,0 +1,64 @@
+.ingenieria-info-container {
+    padding: 20px;
+    font-family: 'ITCAvantGardeStd-Bk', sans-serif;
+}
+
+.title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.calculations-table,
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.calculations-table th,
+.calculations-table td,
+.results-table th,
+.results-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.calculations-table th,
+.results-table th {
+    background-color: #f2f2f2;
+}
+
+.calculations-table tr:nth-child(even),
+.results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.calculations-table tr:hover,
+.results-table tr:hover {
+    background-color: #eaeaea;
+}
+
+.calculation-details {
+    border: 1px solid #ddd;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.calculation-details h3 {
+    margin-top: 0;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #444;
+}

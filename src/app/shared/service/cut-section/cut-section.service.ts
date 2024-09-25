@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../environment.prod';
+import { environment } from '../../../../../environment';
+import { CorteRecalculation } from '../../model/cut-section/recalculate-results';
 
 @Injectable({
     providedIn: 'root'
@@ -18,5 +19,9 @@ export class CutSectionService {
 
     recalculateCut(genericNumber: string, orderNumber: string, width: number): Observable<any> {
         return this.http.post(`${this.baseUrl}/recalculate`, { genericNumber, orderNumber, width });
+    }
+
+    getAllRecalculations(): Observable<CorteRecalculation[]> {
+        return this.http.get<CorteRecalculation[]>(`${this.baseUrl}/all-recalculations`);
     }
 }

@@ -1,5 +1,50 @@
-<div class="settings-container p-8 bg-gray-800 min-h-screen text-white">
-    <h2 class="text-3xl font-bold mb-4">Configuración</h2>
-    <p class="text-lg text-gray-400">Aquí puedes configurar las opciones de la aplicación.</p>
-  </div>
-  
+<div class="settings-container">
+  <h2 class="title">Configuración de Perfil</h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+    <div class="form-group">
+      <label for="username">Nombre de Usuario</label>
+      <input id="username" formControlName="username">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Nombre Completo</label>
+      <input id="name" formControlName="name">
+      <div *ngIf="nameControl?.invalid && nameControl?.touched" class="error">
+        El nombre es requerido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="area">Área</label>
+      <input id="area" formControlName="area">
+      <div *ngIf="areaControl?.invalid && areaControl?.touched" class="error">
+        El área es requerida.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Nueva Contraseña</label>
+      <input id="password" type="password" formControlName="password">
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirmar Nueva Contraseña</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword">
+      <div *ngIf="profileForm.errors?.['mismatch'] && confirmPasswordControl?.touched" class="error">
+        Las contraseñas no coinciden.
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="isLoading">Guardar Cambios</button>
+    </div>
+
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>

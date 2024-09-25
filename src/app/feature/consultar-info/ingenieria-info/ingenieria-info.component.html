@@ -1,1 +1,64 @@
-<p>ingenieria-info works!</p>
+<div class="ingenieria-info-container">
+    <h2 class="title">Cálculos de Ingeniería</h2>
+
+    <table class="calculations-table">
+        <thead>
+            <tr>
+                <th>Nro. Muestra</th>
+                <th>Nro. Genérico</th>
+                <th>Sentido</th>
+                <th>Línea</th>
+                <th>Talla Base</th>
+                <th>Sesgo</th>
+                <th>Creado Por</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let calculation of calculations">
+                <td>{{ calculation.nroMuestra }}</td>
+                <td>{{ calculation.nroGenerico || 'N/A' }}</td>
+                <td>{{ getSentidoLabel(calculation.sentido) }}</td>
+                <td>{{ calculation.linea }}</td>
+                <td>{{ calculation.tallaBase }}</td>
+                <td>{{ calculation.sesgo }}</td>
+                <td>{{ calculation.createdBy }}</td>
+                <td>{{ calculation.dateCreated | date: 'short' }}</td>
+                <td>
+                    <button (click)="viewDetails(calculation)">Ver Detalles</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Detalles del cálculo seleccionado -->
+    <div *ngIf="selectedCalculation" class="calculation-details">
+        <h3>Detalles del Cálculo - Muestra {{ selectedCalculation.nroMuestra }}</h3>
+        <p><strong>Ancho:</strong> {{ selectedCalculation.ancho }} cm</p>
+        <p><strong>Medidas:</strong></p>
+        <ul>
+            <li *ngFor="let medida of selectedCalculation.medidas">
+                Valor: {{ medida.value }} cm, Escala: {{ medida.escala }} cm
+            </li>
+        </ul>
+        <p><strong>Resultados:</strong></p>
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Etiqueta</th>
+                    <th>Valor</th>
+                    <th>Talla</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let resultado of selectedCalculation.resultados">
+                    <td>{{ resultado.label }}</td>
+                    <td>{{ resultado.value }} cm</td>
+                    <td>{{ resultado.talla }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="closeDetails()">Cerrar Detalles</button>
+    </div>
+</div>

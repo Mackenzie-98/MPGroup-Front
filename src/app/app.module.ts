@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -22,6 +22,7 @@ import { IngenieriaInfoComponent } from './feature/consultar-info/ingenieria-inf
 import { SidebarComponent } from './core/sidebar/sidebar.component';
 import { ProfileMenuComponent } from './core/sidebar/profile-menu/profile-menu.component';
 import { ModalComponent } from './core/modal/modal.component';
+import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
     { path: 'normalizar', component: NormalizeComponent, canActivate: [AuthGuard] },
     { path: 'consultar-ingenieria', component: IngenieriaInfoComponent, canActivate: [AuthGuard] },
     { path: 'consultar-corte', component: CorteInfoComponent, canActivate: [AuthGuard] },
+    { path: 'perfil', component: SettingsComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/home' }
 ];
 
@@ -50,13 +52,17 @@ const routes: Routes = [
         NormalizeComponent,
         SidebarComponent,
         ProfileMenuComponent,
-        ModalComponent
+        ModalComponent,
+        IngenieriaInfoComponent,
+        CorteInfoComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        CommonModule,
+        ReactiveFormsModule,
         RouterModule.forRoot(routes)
     ],
     providers: [
