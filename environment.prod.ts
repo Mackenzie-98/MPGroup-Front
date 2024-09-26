@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://api.ingenieria-grupomp.site/',
+    apiUrl: 'https://api.ingenieria-grupomp.site/',
 };
